@@ -1,0 +1,10 @@
+# Top level project file
+#
+# Services must include this file as follows:
+# ```
+# custom:
+#   project: ${file("../project.yaml")}}
+# ```
+
+name: slack-signup
+deploymentBucket: com.serverless.slacksignup.deploymentbucket

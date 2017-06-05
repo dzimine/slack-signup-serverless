@@ -1,0 +1,19 @@
+{
+  "name": "slack-signup-serverless",
+  "version": "0.1.0",
+  "description": "Serverless implmementation for StackStorm community signup process",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dzimine/slack-signup-serverless.git"
+  },
+  "license": "UNLICENSED",
+  "keywords": [],
+  "author": "Dmitri Zimine",
+  "dependencies": {},
+  "devDependencies": {
+    "js-yaml": "^3.7.0",
+    "serverless-step-functions": "^1.0.2",
+    "serverless": "^1.4.0"
+  }
+}

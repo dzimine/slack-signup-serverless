@@ -18,20 +18,20 @@ package:
 
 functions:
   InviteSlack:
-    handler: invite-slack/handler.endpoint
+    handler: invite_slack/handler.endpoint
     package:
       include:
-        - invite-slack/**
+        - invite_slack/**
   RecordDB:
-    handler: record-db/handler.endpoint
+    handler: record_db/handler.endpoint
     package:
       include:
-        - record-db/**
+        - record_db/**
   RecordAC:
-    handler: record-ac/handler.endpoint
+    handler: record_ac/handler.endpoint
     package:
       include:
-        - record-ac/**
+        - record_ac/**
 
 stepFunctions:
   stateMachines:

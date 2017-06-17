@@ -12,10 +12,13 @@ import requests
 
 
 def endpoint(event, context):
-    print("Received event: " + event)
 
     try:
-        event = json.loads(event)
+        if isinstance(event, basestring):
+            event = json.loads(event)
+
+        print("Received event: " + json.dumps(event, indent=2))
+
         TOKEN = os.environ['SLACK_TOKEN']
         CHANNEL_IDS = os.environ.get('CHANNEL_IDS', '')
         TEAM = os.environ['SLACK_TEAM']
@@ -26,7 +29,7 @@ def endpoint(event, context):
             "body": "Invite not sent: SLACK_TOKEN and SLACK_TEAM must be set"
             }
     except ValueError as e:
-        print "ERROR: Can not parse `event` input: " + str(e)
+        print "ERROR: Can not parse `event`: '{}'\n{}".format(str(event), str(e))
         return {
             "statusCode": 400,
             "body": "Invite not sent: bad input"

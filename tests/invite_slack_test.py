@@ -6,13 +6,13 @@ from httmock import urlmatch, HTTMock
 from invite_slack import handler
 
 
-event = json.dumps({
+event = {
     'email': 'yuri.gagarin@gmail.com',
     'first_name': 'Yuri',
     'last_name': 'Gagarin'
-})
+}
 
-context = json.dumps({})
+context = {}
 
 
 class InviteSlackTest(unittest.TestCase):
@@ -22,7 +22,6 @@ class InviteSlackTest(unittest.TestCase):
         self.assertEqual(res['statusCode'], 500)
 
     def test_handler_bad_input(self):
-        # TODO: pass strings, as event comes as string!
         res = handler.endpoint("unformatted {} json", context)
 
         self.assertEqual(res['statusCode'], 400)

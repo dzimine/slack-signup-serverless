@@ -1,14 +1,12 @@
-service: ${self:custom.project.name}
+service: slack-signup
 
 frameworkVersion: ">=1.2.0 <2.0.0"
 
 custom:
-  project: ${file(./project.yml)}
   private: ${file(./private.yml)}
 
 provider:
   name: aws
-  deploymentBucket: ${self:custom.project.deploymentBucket}
   runtime: python2.7
 
 package:
@@ -22,6 +20,7 @@ functions:
     package:
       include:
         - invite_slack/**
+    environment: ${file(env.yml):slack}
   RecordDB:
     handler: record_db/handler.endpoint
     package:
@@ -47,35 +46,36 @@ stepFunctions:
         States:
           RecordDB:
             Type: Task
-            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:custom.project.name}-dev-RecordDB
+            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:service}-dev-RecordDB
             Next: RecordAC
             ResultPath: $.results.RecordDB
           RecordAC:
             Type: Task
-            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:custom.project.name}-dev-RecordAC
+            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:service}-dev-RecordAC
             Next: InviteSlack
             ResultPath: $.results.RecordAC
           InviteSlack:
             Type: Task
             # Resource: ${self.resources.Outputs.InviteSlackLambdaArn.Value} too bad this doesn't work, chicken-n-egg problem
-            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:custom.project.name}-dev-InviteSlack
+            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:service}-dev-InviteSlack
             ResultPath: $.results.InviteSlack
             End: true
 
 resources:
+
   Outputs:
     InviteSlackLambdaName:
       Description: Invite Slack Lambda function name
       Value:
         Ref: InviteSlackLambdaFunction
       Export:
-        Name: ${self:custom.project.name}-FunctionName
+        Name: ${self:service}-FunctionName
     InviteSlackLambdaArn:
       Description: The Name of the Photo Assignments Fail Lambda
       Value:
         'Fn::GetAtt': [ InviteSlackLambdaFunction, Arn ]
       Export:
-        Name: ${self:custom.project.name}-FunctionArn
+        Name: ${self:service}-FunctionArn
 
 plugins:
   - serverless-step-functions

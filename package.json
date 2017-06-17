@@ -13,7 +13,6 @@
   "dependencies": {},
   "devDependencies": {
     "js-yaml": "^3.7.0",
-    "serverless-step-functions": "^1.0.2",
-    "serverless": "^1.4.0"
+    "serverless-step-functions": "^1.0.2"
   }
 }

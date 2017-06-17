@@ -1,6 +1,5 @@
 import unittest
 import os
-import json
 from httmock import urlmatch, HTTMock
 
 from invite_slack import handler

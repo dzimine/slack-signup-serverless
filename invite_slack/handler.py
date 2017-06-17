@@ -27,7 +27,7 @@ def endpoint(event, context):
         return {
             "statusCode": 500,
             "body": "Invite not sent: SLACK_TOKEN and SLACK_TEAM must be set"
-            }
+        }
     except ValueError as e:
         print "ERROR: Can not parse `event`: '{}'\n{}".format(str(event), str(e))
         return {
@@ -44,7 +44,7 @@ def endpoint(event, context):
     return {
         "statusCode": 200,
         "body": "Invite sent"
-        }
+    }
 
 
 def invite(email, token, team, first_name, last_name,

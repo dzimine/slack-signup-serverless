@@ -1,3 +1,4 @@
 node_modules/**
 .serverless/**
+.venv/**
 private.yml

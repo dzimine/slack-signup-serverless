@@ -52,10 +52,16 @@ for multi-step sign-up workflow that touches multiple services.
         plugin](https://github.com/horike37/serverless-step-functions) shortcut which doesn't support CORS,
         or [fix the issue](https://github.com/horike37/serverless-step-functions/issues/37))
 
-5. Run
+5. Run, with `curl`:
 
     ```
     curl -X PUT -H "Content-Type: application/json" -d '{"email":"your@email.com", "first_name":"Donald", "last_name":"Trump"}'  https://wqftmz3m97.execute-api.us-east-1.amazonaws.com/dev/signup
+    ```
+    
+    Or, with `serverless`, for convenience: 
+    
+    ```
+    sls invoke stepf --name signup --data '{"email":"your@email.com", "first_name":"Donald", "last_name":"Trump"}' 
     ```
 
 ### Unit testing
@@ -75,5 +81,15 @@ for multi-step sign-up workflow that touches multiple services.
 
 
 ### Tips and tricks
-TBD
+
+* Call individual lambda functions with serverless
+
+    ```
+    sls invoke -f RecordAC --data '{"email":"your@email.com", "first_name":"Donald", "last_name":"Trump"}' 
+    ```
+* Watch the logs:
+
+    ```
+    sls logs -f RecordAC
+    ```
 

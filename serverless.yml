@@ -8,6 +8,18 @@ custom:
 provider:
   name: aws
   runtime: python2.7
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
 
 package:
   individually: true
@@ -41,7 +53,7 @@ stepFunctions:
             path: signup
             method: PUT
             cors: true # Wish it worked but it does NOT: https://github.com/horike37/serverless-step-functions/issues/37
-      definition: # ${file(workflow.yml)}
+      definition: # ${file(workflow.yml)} - doesn't work, why?
         Comment: "Community sign-up workflow"
         StartAt: RecordDB
         States:
@@ -63,6 +75,24 @@ stepFunctions:
             End: true
 
 resources:
+
+  Resources:
+    UsersDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: email
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
 
   Outputs:
     InviteSlackLambdaName:

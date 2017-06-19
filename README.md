@@ -1,5 +1,7 @@
 # StackStorm Community Signup Serverless Service
 
+[![Build Status](https://circleci.com/gh/dzimine/slack-signup-serverless/tree/master.svg?style=shield)](https://circleci.com/gh/dzimine/slack-signup-serverless)
+
 > This time, with [Serverless framework](https://serverless.com)
 
 This is a 'take two' on [Slack Signup with AWS Lambda](https://github.com/dzimine/slack-signup-lambda).

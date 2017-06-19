@@ -23,16 +23,10 @@ def endpoint(event, context):
         tags = os.environ.get('TAGS')
     except KeyError:
         print "ERROR: Environment variables URL and API_KEY must be set."
-        return {
-            "statusCode": 500,
-            "body": "Contact is NOT recorded: backend configuration error."
-        }
+        raise
     except ValueError as e:
         print "ERROR: Can not parse `event`: '{}'\n{}".format(str(event), str(e))
-        return {
-            "statusCode": 400,
-            "body": "Contact is NOT recorded: bad input."
-        }
+        raise
 
     res = add_ac_contact(
         config,

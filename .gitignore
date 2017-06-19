@@ -1,0 +1,6 @@
+node_modules/**
+.serverless/**
+.venv/**
+.tox
+private.yml
+env.yml

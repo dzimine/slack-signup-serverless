@@ -1,0 +1,112 @@
+service: slack-signup
+
+frameworkVersion: ">=1.2.0 <2.0.0"
+
+custom:
+  private: ${file(./private.yml)}
+
+provider:
+  name: aws
+  runtime: python2.7
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+
+package:
+  individually: true
+  exclude:
+    - ./**
+
+functions:
+  InviteSlack:
+    handler: invite_slack/handler.endpoint
+    package:
+      include:
+        - invite_slack/**
+    environment: ${file(env.yml):slack}
+  RecordDB:
+    handler: record_db/handler.endpoint
+    package:
+      include:
+        - record_db/**
+  RecordAC:
+    handler: record_ac/handler.endpoint
+    package:
+      include:
+        - record_ac/**
+    environment: ${file(env.yml):active_campaign}
+
+stepFunctions:
+  stateMachines:
+    signup:
+      events:
+        - http:
+            path: signup
+            method: PUT
+            cors: true # Wish it worked but it does NOT: https://github.com/horike37/serverless-step-functions/issues/37
+      definition: # ${file(workflow.yml)} - doesn't work, why?
+        Comment: "Community sign-up workflow"
+        StartAt: RecordDB
+        States:
+          RecordDB:
+            Type: Task
+            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:service}-dev-RecordDB
+            Next: RecordAC
+            ResultPath: $.results.RecordDB
+          RecordAC:
+            Type: Task
+            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:service}-dev-RecordAC
+            Next: InviteSlack
+            ResultPath: $.results.RecordAC
+          InviteSlack:
+            Type: Task
+            # Resource: ${self.resources.Outputs.InviteSlackLambdaArn.Value} too bad this doesn't work, chicken-n-egg problem
+            Resource: arn:aws:lambda:${self:custom.private.region}:${self:custom.private.accountId}:function:${self:service}-dev-InviteSlack
+            ResultPath: $.results.InviteSlack
+            End: true
+
+resources:
+
+  Resources:
+    UsersDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: email
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+
+  Outputs:
+    InviteSlackLambdaName:
+      Description: Invite Slack Lambda function name
+      Value:
+        Ref: InviteSlackLambdaFunction
+      Export:
+        Name: ${self:service}-FunctionName
+    InviteSlackLambdaArn:
+      Description: The Name of the Photo Assignments Fail Lambda
+      Value:
+        'Fn::GetAtt': [ InviteSlackLambdaFunction, Arn ]
+      Export:
+        Name: ${self:service}-FunctionArn
+
+plugins:
+  - serverless-step-functions

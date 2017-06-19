@@ -1,6 +1,7 @@
 # StackStorm Community Signup Serverless Service
 
 [![Build Status](https://circleci.com/gh/dzimine/slack-signup-serverless/tree/master.svg?style=shield)](https://circleci.com/gh/dzimine/slack-signup-serverless)
+![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
 
 > This time, with [Serverless framework](https://serverless.com)
 

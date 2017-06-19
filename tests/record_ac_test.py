@@ -22,8 +22,12 @@ env = {
 
 class RecordACTest(unittest.TestCase):
     def test_handler_no_env(self):
-        res = handler.endpoint(event, context)
-        self.assertEqual(res['statusCode'], 500)
+        with self.assertRaises(KeyError):
+            handler.endpoint(event, context)
+
+    def test_handler_bad_input(self):
+        with self.assertRaises(ValueError):
+            handler.endpoint("misformatted {} json", context)
 
     @all_requests
     @mock.patch.dict(os.environ, env)

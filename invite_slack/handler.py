@@ -23,18 +23,13 @@ def endpoint(event, context):
         CHANNEL_IDS = os.environ.get('CHANNEL_IDS', '')
         TEAM = os.environ['SLACK_TEAM']
     except KeyError:
-        print "ERROR: Environment variables SLACK_TOKEN and SLACK_TEAM must be set."
-        return {
-            "statusCode": 500,
-            "body": "Invite not sent: SLACK_TOKEN and SLACK_TEAM must be set"
-        }
+        failure = "ERROR: Environment variables SLACK_TOKEN and SLACK_TEAM must be set."
+        print failure
+        raise KeyError(failure)
     except ValueError as e:
-        print "ERROR: Can not parse `event`: '{}'\n{}".format(str(event), str(e))
-        return {
-            "statusCode": 400,
-            "body": "Invite not sent: bad input"
-        }
-
+        failure = "ERROR: Can not parse `event`: '{}'\n{}".format(str(event), str(e))
+        print failure
+        raise ValueError(failure)
     invite(event.get('email'),
            token=TOKEN,
            team=TEAM,

@@ -4,6 +4,8 @@ frameworkVersion: ">=1.2.0 <2.0.0"
 
 custom:
   private: ${file(./private.yml)}
+  apigs3:
+    dist: web
 
 provider:
   name: aws
@@ -51,7 +53,7 @@ stepFunctions:
       events:
         - http:
             path: signup
-            method: PUT
+            method: POST
             cors: true # Wish it worked but it does NOT: https://github.com/horike37/serverless-step-functions/issues/37
       definition: # ${file(workflow.yml)} - doesn't work, why?
         Comment: "Community sign-up workflow"
@@ -110,3 +112,4 @@ resources:
 
 plugins:
   - serverless-step-functions
+  - serverless-apig-s3

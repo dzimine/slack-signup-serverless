@@ -47,18 +47,16 @@ for multi-step sign-up workflow that touches multiple services.
         ```
         sls deploy -v
         ```
-    3. Enable the CORS via AWS console (for calling from web UI). Select resource, click "Actions"
-        menu button, "Enable CORS", click the blue "Enable CORS" button.
-        It will add "OPTIONS" method and set up the proper response headers.
+    3. Deploy web client
 
-        >TODO: Create CloudFormation API Resource in serverless file (instead of [serverless-step-function
-        plugin](https://github.com/horike37/serverless-step-functions) shortcut which doesn't support CORS,
-        or [fix the issue](https://github.com/horike37/serverless-step-functions/issues/37))
+        ```
+        sls client deploy
+        ```
 
 5. Run, with `curl`:
 
     ```
-    curl -X PUT -H "Content-Type: application/json" -d '{"email":"your@email.com", "first_name":"Donald", "last_name":"Trump"}'  https://wqftmz3m97.execute-api.us-east-1.amazonaws.com/dev/signup
+    curl -X POST -H "Content-Type: application/json" -d '{"email":"your@email.com", "first_name":"Donald", "last_name":"Trump"}'  https://wqftmz3m97.execute-api.us-east-1.amazonaws.com/dev/signup
     ```
     
     Or, with `serverless`, for convenience: 
@@ -95,4 +93,5 @@ for multi-step sign-up workflow that touches multiple services.
     ```
     sls logs -f RecordAC
     ```
+* On subsequent web client updates, just run `sls client deploy`.
 

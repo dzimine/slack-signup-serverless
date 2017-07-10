@@ -9,8 +9,12 @@ This is a 'take two' on [Slack Signup with AWS Lambda](https://github.com/dzimin
 It was simple and functional, but working with AWS raw is such a pain in the butt...
 
 Here, I use 1) [serverless.com](https://serverless.com) to make working with lambda enjoyable and 2) AWS step-functions
-for multi-step sign-up workflow that touches multiple services.
+for multi-step sign-up workflow that touches multiple services. In this particular example, the workflow does what [StackStorm](https://www.stackstorm.com) signtup needs:
+* call Slack API to create an invitation with [Slack's undocumented API](https://github.com/ErikKalkoken/slackApiDoc/blob/master/users.admin.invite.mdCode)
+* add a user to [ActiveCampaign CRM](http://www.activecampaign.com) 
+* record a user in DynamoDB
 
+It is easy to modify to add your custom steps, have fun!
 
 ### Install, configure, deploy, test
 1. Clone this repository.

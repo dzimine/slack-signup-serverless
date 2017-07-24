@@ -72,8 +72,8 @@ It is easy to modify to add your custom steps, have fun!
     sls invoke stepf --name signup --data '{"email":"your@email.com", "first_name":"Donald", "last_name":"Trump"}' 
     ```
 
-### Unit testing
-1. Set up python unit tests(TODO: script and CI this).
+### Unit testing and local development
+1. Run `tox` (dah, `tox` and all your Python stack needs to be installed)
 
     ```
     virtualenv .venv
@@ -81,12 +81,16 @@ It is easy to modify to add your custom steps, have fun!
     pip install -r tests/test_requirements.txt
     ```
 
-2. Run unit tests (hint: use `-s` to see output.
+2. To run unit tests for local testing/development:
 
     ```
+    # Activate virtualenv from tox
+    source ./tox/py27/bin/activate
+    # Run all tests
     python -m pytest
+    # Run a single test and print the output ( -s flag ) 
+    python -m pytest -s tests/invite_slack_test.py::InviteSlackTest::test_handler_ok 
     ```
-
 
 ### Tips and tricks
 

@@ -1,7 +1,7 @@
 {
   "name": "slack-signup-serverless",
   "version": "0.1.0",
-  "description": "Serverless implmementation for StackStorm community signup process",
+  "description": "Serverless implmementation for StackStorm community signup process. Modify and use for yours.",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   "dependencies": {},
   "devDependencies": {
     "js-yaml": "^3.7.0",
-    "serverless-apig-s3": "^1.1.0",
+    "serverless-apig-s3": "git+https://github.com/xdissent/serverless-apig-s3.git#xdissent",
     "serverless-step-functions": "^1.0.2"
   }
 }

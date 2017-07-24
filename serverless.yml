@@ -6,6 +6,7 @@ custom:
   private: ${file(./private.yml)}
   apigs3:
     dist: web
+    topFiles: true
 
 provider:
   name: aws

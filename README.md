@@ -24,15 +24,18 @@ It is easy to modify to add your custom steps, have fun!
     npm install -g serverless
     npm install
     ```
+    I use [serverless-stepfunction](https://github.com/horike37/serverless-step-functions) plugin to write stepfunction as YAML in serverless.yaml and expose it as an API endpoint,
+    and [serverless-apig-s3](https://github.com/sdd/serverless-apig-s3) for convenient front-end deployment to the same URI (no CORS messing).
 
 3. Configure credentials
 
     1. For AWS credentials, follow [setup docs](https://serverless.com/framework/docs/providers/aws/guide/credentials/).
         I prefer using [AWS CLI with named profiles](http://docs.aws.amazon.com/cli/latest/userguide/
-        cli-multiple-profiles.html). Test AWS CLI settings: `aws lambda list-functions`.
+        cli-multiple-profiles.html). To use an AWS profile, `export AWS_DEFAULT_PROFILE="profileName"`. Test AWS CLI settings: `aws lambda list-functions`.
 
-        To use an AWS profile in Serverless, `export AWS_PROFILE="profileName"`,
-        or use `--aws-profile profileName` when invoking `sls` CLI. Unfortunately there's no way
+        To use an AWS profile in Serverless, `export AWS_PROFILE=$AWS_DEFAULT_PROFILE`, to match `aws` CLI profile and avoid confusion. 
+        
+        Or use `--aws-profile profileName` when invoking `sls` CLI. Unfortunately there's no way
         to test it before you try to deploy.
 
         Create `./private.yml` file and set up the accountID and region there,
@@ -97,5 +100,7 @@ It is easy to modify to add your custom steps, have fun!
     ```
     sls logs -f RecordAC
     ```
-* On subsequent web client updates, just run `sls client deploy`.
+* On subsequent web client updates, just run `sls client deploy`. However when changes touch API Gateway settings, the full deploy is needed.
+* Web updates doesn't [always, ever] deploy the API Gateway changes. Need to deploy manually (Console->Resources->Actions-Deploy API).
+
 

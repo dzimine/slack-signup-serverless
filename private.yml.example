@@ -1,4 +1,6 @@
 # Top level private settings
 #
 region: us-east-1
-accountId: 000000000000 # DZ personal
+
+# AWS Account ID, find it here: http://docs.aws.amazon.com/IAM/latest/UserGuide/console_account-alias.html
+accountId: 000000000000

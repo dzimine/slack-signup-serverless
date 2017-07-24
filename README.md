@@ -33,14 +33,23 @@ It is easy to modify to add your custom steps, have fun!
         I prefer using [AWS CLI with named profiles](http://docs.aws.amazon.com/cli/latest/userguide/
         cli-multiple-profiles.html). To use an AWS profile, `export AWS_DEFAULT_PROFILE="profileName"`. Test AWS CLI settings: `aws lambda list-functions`.
 
-        To use an AWS profile in Serverless, `export AWS_PROFILE=$AWS_DEFAULT_PROFILE`, to match `aws` CLI profile and avoid confusion. 
+        To use an AWS profile in Serverless, `export AWS_PROFILE=$AWS_DEFAULT_PROFILE`, to match `aws` CLI profile and avoid confusion. You **MUST** also specify the AWS region in `AWS_REGION` for serverless, as it won't take it from AWS profile. So, three env vars in total:
+        
+        ```
+        export AWS_DEFAULT_PROFILE="profileName"
+        export AWS_PROFILE=$AWS_DEFAULT_PROFILE
+        export AWS_REGION=us-west-2
+        ```
+        
+        > NOTE: Till the [bug #3947](https://github.com/serverless/serverless/issues/3947) fixed,the way to set a region is by `--region` in `sls` CLI.
         
         Or use `--aws-profile profileName` when invoking `sls` CLI. Unfortunately there's no way
         to test it before you try to deploy.
 
         Create `./private.yml` file and set up the accountID and region there,
-        see [`private.yml.example`](./private.yml.example)
-    2. Slack and ActiveCampaign: place your credentials and config in `./env.yml`, use [env.yml.example](./env.yml.example)
+        see [`private.yml.example`](./private.yml.example). **Note** that region must match
+    2. Slack and ActiveCampaign: place your credentials and config in `./env.yml`, use [env.yml.example](./env.yml.example). To find your Slack credentials for production or testing, 
+    [use this hint from Stackstorm-Exchange](https://github.com/StackStorm-Exchange/stackstorm-slack#obtaining-auth-token).
 
 4. Deploy
 
@@ -106,5 +115,9 @@ It is easy to modify to add your custom steps, have fun!
     ```
 * On subsequent web client updates, just run `sls client deploy`. However when changes touch API Gateway settings, the full deploy is needed.
 * Web updates doesn't [always, ever] deploy the API Gateway changes. Need to deploy manually (Console->Resources->Actions-Deploy API).
+* Due to [apig-s3 bug](https://github.com/sdd/serverless-apig-s3/issues/11), remove the web s3 bucket manually when removing a stack.
+    ```aws s3 rb s3://bucketname --force```
+* Removing the stack does not remove the DynamoDB table. If you really want to start from scratch, delete it manually (export the data first):
+    ```aws dynamodb delete-table --table-name slack-signup-dev```
 
 

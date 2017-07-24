@@ -13,7 +13,7 @@ def endpoint(event, context):
     logger.info("Event received: {}".format(json.dumps(event)))
     if 'email' not in event:
         logger.error("Validation Failed")
-        raise Exception("Couldn't create the todo item.")
+        raise Exception("Couldn't create the record: email must be present.")
 
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 

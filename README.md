@@ -1,7 +1,10 @@
-# StackStorm Community Signup Serverless Service
+# Community Signup Serverless Service with Lambda, Python, StepFunction and DynamoDB
 
 [![Build Status](https://circleci.com/gh/dzimine/slack-signup-serverless/tree/master.svg?style=shield)](https://circleci.com/gh/dzimine/slack-signup-serverless)
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
+
+Blog post: [Exploring Serverless with Python, StepFunctions, and Web Front-end
+Serverless](https://medium.com/@dzimine/exploring-serverless-with-python-stepfunctions-and-web-front-end-8e0bf7203d4b)
 
 > This time, with [Serverless framework](https://serverless.com)
 

@@ -19,6 +19,9 @@ for multi-step sign-up workflow that touches multiple services. In this particul
 
 It is easy to modify to add your custom steps, have fun!
 
+![Serverless application diagram](https://github.com/dzimine/slack-signup-serverless/raw/master/ServerlessApplication.png)
+
+
 ### Install, configure, deploy, test
 1. Clone this repository.
 2. Install [serverless framework](https://serverless.com/framework/docs), and the required plugins:

@@ -1,7 +1,10 @@
-# StackStorm Community Signup Serverless Service
+# Community Signup Serverless Service with Lambda, Python, StepFunction and DynamoDB
 
 [![Build Status](https://circleci.com/gh/dzimine/slack-signup-serverless/tree/master.svg?style=shield)](https://circleci.com/gh/dzimine/slack-signup-serverless)
 ![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)
+
+Blog post: [Exploring Serverless with Python, StepFunctions, and Web Front-end
+Serverless](https://medium.com/@dzimine/exploring-serverless-with-python-stepfunctions-and-web-front-end-8e0bf7203d4b)
 
 > This time, with [Serverless framework](https://serverless.com)
 
@@ -15,6 +18,9 @@ for multi-step sign-up workflow that touches multiple services. In this particul
 * record a user in DynamoDB
 
 It is easy to modify to add your custom steps, have fun!
+
+![Serverless application diagram](https://github.com/dzimine/slack-signup-serverless/raw/master/ServerlessApplication.png)
+
 
 ### Install, configure, deploy, test
 1. Clone this repository.

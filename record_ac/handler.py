@@ -33,6 +33,8 @@ def endpoint(event, context):
         event.get('email'),
         first_name=event.get('first_name'),
         last_name=event.get('last_name', ''),
+        country=event.get('country'),
+        consentCheckBox=event.get('consent-checkbox'),
         tags=tags)
     return {
         "statusCode": res[0],
@@ -40,12 +42,14 @@ def endpoint(event, context):
     }
 
 
-def add_ac_contact(config, email, first_name='', last_name='', tags=''):
+def add_ac_contact(config, email, first_name='', last_name='', country, consentCheckBox='false', tags=''):
     url = urlparse.urljoin(config['url'], 'admin/api.php')
     payload = {
         'first_name': first_name,
         'last_name': last_name,
         'email': email,
+        'country': country,
+        'consentCheckBox': consentCheckBox,
         'tags': tags
     }
     query_params = {

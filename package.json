@@ -14,6 +14,6 @@
   "devDependencies": {
     "js-yaml": "^3.7.0",
     "serverless-apig-s3": "git+https://github.com/xdissent/serverless-apig-s3.git#xdissent",
-    "serverless-step-functions": "^1.0.2"
+    "serverless-step-functions": "^1.8.0"
   }
 }
